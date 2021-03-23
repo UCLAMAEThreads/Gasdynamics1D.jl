@@ -2,20 +2,26 @@ using Gasdynamics1D
 using Test
 using Literate
 
-outputdir = "../notebook"
+const GROUP = get(ENV, "GROUP", "All")
+
+
+notebookdir = "../notebook"
+docdir = "../docs/src/manual"
 litdir = "./literate"
 
-for (root, dirs, files) in walkdir(litdir)
-    if splitpath(root)[end] == "assets"
-        for file in files
-            cp(joinpath(root, file),joinpath(outputdir,file),force=true)
-        end
+
+if GROUP == "All" || GROUP == "Notebooks"
+  for (root, dirs, files) in walkdir(litdir)
+    for file in files
+      endswith(file,".jl") && Literate.notebook(joinpath(root, file),notebookdir)
     end
+  end
 end
 
-
-for (root, dirs, files) in walkdir(litdir)
+if GROUP == "Documentation"
+  for (root, dirs, files) in walkdir(litdir)
     for file in files
-        endswith(file,".jl") && Literate.notebook(joinpath(root, file),outputdir)
+      endswith(file,".jl") && Literate.markdown(joinpath(root, file),docdir)
     end
+  end
 end
