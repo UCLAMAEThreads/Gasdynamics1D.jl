@@ -4,6 +4,8 @@ module Gasdynamics1D
   Quasi-1d gas dynamics routines
   =#
 
+  include("plot_recipes.jl")
+
   import Base:+,*,-,/,^,>,<,>=,<=,==,isapprox
 
   using Roots
