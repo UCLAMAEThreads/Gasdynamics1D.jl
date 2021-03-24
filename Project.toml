@@ -14,6 +14,7 @@ Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
 
 [compat]
 ColorTypes = "0.10.9"
+DocumenterTools = "0.1"
 LaTeXStrings = "1.2.0"
 Literate = "2.7"
 PlotUtils = "1.0.9"
