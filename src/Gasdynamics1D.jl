@@ -9,6 +9,8 @@ module Gasdynamics1D
   import Base:+,*,-,/,^,>,<,>=,<=,==,isapprox
 
   using Roots
+  using Requires
+  using Reexport
 
   export default_unit,ThermodynamicUnits,SI,SIOtherUnits,Imperial,OtherUnits,Dimensionless
   export convert_unit
@@ -46,6 +48,17 @@ module Gasdynamics1D
   export FLStarOverD,POverPStar,ρOverρStar,TOverTStar,P0OverP0Star
   export HeatFlux,T0OverT0Star,VOverVStar
 
+  function __init__()
+
+    @require Plots="91a5bcdd-55d7-5caf-9e0b-520d859cae80" begin
+
+      @reexport using LaTeXStrings
+
+      Plots.default(markerstrokealpha = 0, legend = false,
+      dpi = 100, size = (400, 300), grid = false)
+
+    end
+  end
 
 
   #=

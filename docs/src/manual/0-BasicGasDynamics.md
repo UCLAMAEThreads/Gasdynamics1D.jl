@@ -12,10 +12,6 @@ quasi-1d steady compressible flow.
 using Gasdynamics1D
 ```
 
-```@example 0-BasicGasDynamics
-using Plots
-```
-
 ### Setting basic properties and states
 We can set thermodynamic properties and states in a straightforward manner.
 However, it is important to remember that we have to explicitly define the

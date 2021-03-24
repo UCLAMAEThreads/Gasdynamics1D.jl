@@ -6,8 +6,6 @@ quasi-1d steady compressible flow.
 
 # ### Set up the module
 using Gasdynamics1D
-#-
-using Plots
 
 #=
 ### Setting basic properties and states
