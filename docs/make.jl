@@ -34,6 +34,7 @@ makedocs(
 deploydocs(
      repo = "github.com/UCLAMAEThreads/Gasdynamics1D.jl.git",
      target = "build",
+     devbranch = "main",
      deps = nothing,
      make = nothing
      #versions = "v^"
