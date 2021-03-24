@@ -199,7 +199,7 @@ Finally, let us calculate the maximum heat flux -- the heat flux that brings the
 flow just to sonic conditions when starting at the given conditions at location 1.
 This comes from
 
-$$ q_{max} = h_{0}^* - h_{01} = c_p (T_0^* - T_{01})$$
+$$q_{max} = h_{0}^* - h_{01} = c_p (T_0^* - T_{01})$$
 
 We have a convenience function for that, based on stagnation temperature:
 

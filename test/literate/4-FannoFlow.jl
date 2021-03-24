@@ -18,7 +18,7 @@ number and the reference length $L^*$, representing the length required from tha
 point to bring the flow to Mach number equal to 1. The relationship is based on
 the dimensionless parameter
 
-$$ \dfrac{f L^*}{D}$$
+$$\dfrac{f L^*}{D}$$
 
 where $f$ is the Darcy friction factor and $D$ is the duct diameter. Let's plot
  this relationship for air:

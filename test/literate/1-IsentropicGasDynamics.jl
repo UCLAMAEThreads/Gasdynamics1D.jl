@@ -23,7 +23,7 @@ T1 is 20 degrees C, and the pressure p2 is 80 kPa. What is temperature T2?
 
 To answer this, we will use the relationship
 
-$$ \dfrac{T_2}{T_1} = \left( \dfrac{p_2}{p_1}\right)^{(\gamma-1)/\gamma} $$
+$$\dfrac{T_2}{T_1} = \left( \dfrac{p_2}{p_1}\right)^{(\gamma-1)/\gamma} $$
 =#
 p1 = Pressure(101,units=KPa)
 T1 = Temperature(20,units=C)
@@ -156,20 +156,14 @@ A2_over_Astar = AreaRatio(A2/Astar)
 #=
 Now calculate the Mach numbers at location 2 (the nozzle exit):
 =#
-M2sub, M2sup = MachNumber(A2_over_Astar,Isentropic,gas=Air);
+M2sub = SubsonicMachNumber(A2_over_Astar,Isentropic,gas=Air);
 #-
-M2sub
-#-
-M2sup
+M2sup = SupersonicMachNumber(A2_over_Astar,Isentropic,gas=Air);
 #=
 Actually, all of the last few steps can be done in *one step* with a different
 version of the function `MachNumber`:
 =#
 M2sub, M2sup = MachNumber(M1,A1,A2,Isentropic,gas=Air);
-#-
-M2sub
-#-
-M2sup
 
 #=
 Now let's determine the exit pressures (location 2) corresponding to these two Mach numbers:

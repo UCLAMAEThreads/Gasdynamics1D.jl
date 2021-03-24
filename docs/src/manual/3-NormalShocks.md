@@ -56,7 +56,7 @@ plot(M1,s2,xlim=(1,3),ylim=(0,400),xlabel="Mach number",ylabel="Entropy increase
 
 Not surprisingly, the entropy jump gets bigger as the Mach number increases
 
-### Example 8.6 in Wilcox
+### Example 1
 For air entering a shock at Mach number 3, 1 atm, and 50 degrees F, what are the
 Mach number, pressure, and temperature on the other side of the shock?
 
@@ -86,7 +86,7 @@ T2 = Temperature(T1*TemperatureRatio(M1,NormalShock))
 value(T2,F)
 ```
 
-### Example 8.9 in Wilcox
+### Example 2
 A blow-down supersonic windtunnel is supplied with air from a large reservoir.
 A Pitot tube is placed at the exit plane of a converging-diverging nozzle. The test
 section lies at the end of the diverging section. The Mach number in the test
