@@ -11,7 +11,7 @@ The tools in this package enable the user to
 - find the change of flow state in various processes, including
   - quasi-1d isentropic flow with area changes
   - flows through normal shocks
-  - flow with ducts with effects of wall friction (Fanno flow)
-  - flows with ducts with effects of heat transfer (Rayleigh flow)
+  - flows in ducts with effects of wall friction (Fanno flow)
+  - flows in ducts with effects of heat transfer (Rayleigh flow)
 
 The easiest way to get started is to follow the examples notebooks in the `notebook` directory. Also, please consult the [documentation](https://uclamaethreads.github.io/Gasdynamics1D.jl/dev/).
