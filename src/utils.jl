@@ -14,9 +14,7 @@ macro displayedunits(qty,a,dims)
 
       displayedunits(::Type{$utype}) = @u_str($a)
 
-       function ushow(x::$utype)
-            return uconvert(@u_str($a),x)
-        end
+      ushow(x::$utype) = uconvert(@u_str($a),x)
 
       end)
 end
@@ -29,6 +27,7 @@ macro create_dimvar(qty,utype)
           end
           $qty(x::U) where {U<:$utype} = $qty(ushow(x),string($qty))
           $qty(x::Real) = $qty(x*displayedunits($utype),string($qty))
+          default_unit(::Type{$qty}) = displayedunits($utype)
 
           export $qty
       end)

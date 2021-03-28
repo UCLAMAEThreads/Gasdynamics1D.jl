@@ -35,4 +35,9 @@ end
   @test ustrip(h2) == 145
   @test unit(h2) == u"J/kg"
 
+  p = Pressure(80u"kPa")
+  ρ = Density(1.2)
+  T = Temperature(p/ρ/GasConstant(287))
+  @test T == Temperature(p,ρ)
+
 end
