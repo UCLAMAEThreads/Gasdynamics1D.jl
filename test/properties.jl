@@ -20,9 +20,9 @@ end
   @test unit(p) == u"Pa"
 
   T = Temperature(20u"°F")
-  @test ustrip(T) == 15989//60
+  @test ustrip(T) ≈ 15989//60
   @test unit(T) == u"K"
-  @test ustrip(Temperature(20u"°F"),u"°C") == -20//3
+  @test ustrip(Temperature(20u"°F"),u"°C") ≈ -20//3
 
   s1 = Entropy(32)
   s2 = Entropy(45)

@@ -81,7 +81,7 @@ module Gasdynamics1D
 
   Return the numerical value (with units) of `a`
   """
-  value(s::ThermodynamicQuantity) = s.val
+  value(s::ThermodynamicQuantity) = float(s.val)
 
   """
       value(a::ThermodynamicQuantity,units::Unitful.Units)
@@ -91,6 +91,7 @@ module Gasdynamics1D
   and must be dimensionally compatible with `a`
   """
   value(s::ThermodynamicQuantity,units::Unitful.Units) = uconvert(units,value(s))
+
 
   """
       ustrip(a::ThermodynamicQuantity)
@@ -117,7 +118,7 @@ module Gasdynamics1D
   name(s::ThermodynamicQuantity) = s.name
 
   function Base.show(io::IO, m::MIME"text/plain", s::ThermodynamicQuantity{U}) where {U}
-      print(io,"$(s.name) = $(s.val)")
+      print(io,"$(s.name) = $(float(s.val))")
   end
 
   ####### OPERATIONS ON ALL TYPES #######

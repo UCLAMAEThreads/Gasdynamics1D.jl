@@ -16,8 +16,8 @@ using LaTeXStrings
 In a duct with helium, if the flow enters with stagnation temperature of 20 degrees C,
 how much does the stagnation temperature change if we add heat 400 kJ/kg?
 =#
-q = HeatFlux(400,units=KJPerKG)
-T01 = StagnationTemperature(20,units=C)
+q = HeatFlux(400u"kJ/kg")
+T01 = StagnationTemperature(20u"°C")
 
 # starting stagnation enthalpy
 h01 = StagnationEnthalpy(T01,gas=He) # h01 = cp*T01
@@ -29,7 +29,7 @@ h02 = StagnationEnthalpy(h01 + q)
 T02 = StagnationTemperature(h02,gas=He)  # T02 = h02/cp
 
 # Report the final value in Celsius:
-value(T02,C)
+value(T02,u"°C")
 # so the flow exiting the duct has stagnation temperature 97 C.
 
 #=
@@ -87,10 +87,10 @@ Suppose the flow of air in a duct enters with velocity 75 m/s at a pressure of
 =#
 
 # Set the given values
-u1 = Velocity(75)
-p1 = Pressure(150,units=KPa)
+u1 = Velocity(75u"m/s")
+p1 = Pressure(150u"kPa")
 T1 = Temperature(300)
-q = HeatFlux(900,units=KJPerKG)
+q = HeatFlux(900u"kJ/kg")
 
 # We can immediately find the Mach number at the location 1, by finding $c_1$:
 c1 = SoundSpeed(T1,gas=Air)
@@ -153,7 +153,7 @@ We have a convenience function for that, based on stagnation temperature:
 =#
 qmax = HeatFlux(T01,T0star,gas=Air)
 #-
-value(qmax,KJPerKG)
+value(qmax,u"kJ/kg")
 #=
 Thus, we can add up to 1223 kJ/kg before the flow gets choked. Any more than that
 will cause the entrance conditions to change.

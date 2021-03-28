@@ -27,7 +27,7 @@ the list above of QtyType
 
 @create_nondimvar SpecificHeatRatio
 
-
+# Dimensional variables
 @create_dimvar Pressure               PressureType
 @create_dimvar StagnationPressure     PressureType
 @create_dimvar Density                DensityType
@@ -49,6 +49,7 @@ the list above of QtyType
 @create_dimvar Diameter               LengthType
 @create_dimvar Length                 LengthType
 
+# Non-dimensional variables
 @create_nondimvar MachNumber
 @create_nondimvar FLOverD
 @create_nondimvar FrictionFactor
@@ -56,8 +57,8 @@ the list above of QtyType
 @create_nondimvar StagnationPressureRatio
 @create_nondimvar TemperatureRatio
 @create_nondimvar DensityRatio
+@create_nondimvar VelocityRatio
 @create_nondimvar AreaRatio
-
 
 
 #=
