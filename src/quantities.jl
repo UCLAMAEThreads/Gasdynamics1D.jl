@@ -40,7 +40,7 @@ the list above of QtyType
 @create_dimvar StagnationEnthalpy     SpecificEnergyType
 @create_dimvar SoundSpeed             VelocityType
 @create_dimvar StagnationSoundSpeed   VelocityType
-@create_dimvar Velocity               MassFlowRateType
+@create_dimvar Velocity               VelocityType
 @create_dimvar Entropy                SpecificHeatType
 @create_dimvar MassFlowRate           MassFlowRateType
 @create_dimvar HeatFlux               SpecificEnergyType
@@ -52,6 +52,12 @@ the list above of QtyType
 @create_nondimvar MachNumber
 @create_nondimvar FLOverD
 @create_nondimvar FrictionFactor
+@create_nondimvar PressureRatio
+@create_nondimvar StagnationPressureRatio
+@create_nondimvar TemperatureRatio
+@create_nondimvar DensityRatio
+@create_nondimvar AreaRatio
+
 
 
 #=

@@ -4,7 +4,6 @@ module Gasdynamics1D
   Quasi-1d gas dynamics routines
   =#
 
-  include("plot_recipes.jl")
 
   import Base:+,*,-,/,^,>,<,>=,<=,==,isapprox
 
@@ -14,6 +13,8 @@ module Gasdynamics1D
 
   @reexport using Unitful
   import Unitful: 𝐋, 𝐌, 𝚯, 𝐓, unit, ustrip
+
+  include("plot_recipes.jl")
 
 
   #export default_unit,ThermodynamicUnits,SI,SIOtherUnits,Imperial,OtherUnits,Dimensionless
@@ -166,12 +167,12 @@ module Gasdynamics1D
 
 
   include("thermodynamics.jl")
-  #include("isentropic.jl")
-  #include("normalshocks.jl")
-  #include("fanno.jl")
-  #include("rayleigh.jl")
-  #include("nozzle.jl")
-  #include("vectors.jl")
+  include("isentropic.jl")
+  include("normalshocks.jl")
+  include("fanno.jl")
+  include("rayleigh.jl")
+  include("nozzle.jl")
+  include("vectors.jl")
 
 
 end

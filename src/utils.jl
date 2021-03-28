@@ -39,7 +39,7 @@ macro create_nondimvar(qty)
             val :: U
             name :: String
           end
-          $qty(x::Real) = SpecificHeatRatio(x,string($qty))
+          $qty(x::Real) = $qty(x,string($qty))
 
           export $qty
       end)

@@ -17,14 +17,14 @@ struct Nozzle{T,S}
     throat_index :: Integer
 end
 
-function Nozzle(Ai::Area{U},At::Area{U},Ae::Area{U};xmin=-1.0,xmax=3.0,len=201) where {U}
+function Nozzle(Ai::Area,At::Area,Ae::Area;xmin=-1.0,xmax=3.0,len=201)
     x = range(xmin,xmax,length=len)
     a = areas(x,Ai,At,Ae)
     Nozzle(Ai,At,Ae,x,a,_find_throat(a,At))
 end
 
-function areas(x,Ai::Area{U},At::Area{U},Ae::Area{U}) where {U}
-    a = Array{Area{U},1}(undef,length(x))
+function areas(x,Ai::Area,At::Area,Ae::Area)
+    a = Array{Area,1}(undef,length(x))
     araw = _nozzle_area(x,value(Ai),value(At),value(Ae))
     a .= Area.(araw)
 end
@@ -45,9 +45,9 @@ diverging(n::Nozzle) = view(areas(n),n.throat_index+1:length(areas(n)))
 
 function Base.show(io::IO, noz::Nozzle)
   println(io, "Converging-diverging nozzle")
-  println(io, "   Inlet area (sq cm)= "*string(value(inlet(noz),SqCM)))
-  println(io, "   Throat area (sq cm)= "*string(value(throat(noz),SqCM)))
-  println(io, "   Exit area (sq cm)= "*string(value(nozzleexit(noz),SqCM)))
+  println(io, "   Inlet area (sq cm)= "*string(value(inlet(noz),u"cm^2")))
+  println(io, "   Throat area (sq cm)= "*string(value(throat(noz),u"cm^2")))
+  println(io, "   Exit area (sq cm)= "*string(value(nozzleexit(noz),u"cm^2")))
 end
 
 # Shaping of nozzle cross-section
@@ -58,16 +58,16 @@ function _nozzle_area(x,Ai,At,Ae;c=1)
     return π*_radius_shape.(x,sqrt(Ai/π),sqrt(At/π),sqrt(Ae/π),c).^2
 end
 
-struct NozzleProcess{process_type,T,S,PU,PSU,PTU,G}
+struct NozzleProcess{process_type,T,S,G}
   noz :: Nozzle{T,S}
-  p :: Vector{Pressure{PU}}
-  M :: Vector{MachNumber{Dimensionless}}
-  p0 :: StagnationPressure{PSU}
-  T0 :: StagnationTemperature{PTU}
-  pb_subcrit :: Pressure{PU}
-  pb_supcrit_exitshock :: Pressure{PU}
-  pb_supcrit :: Pressure{PU}
-  pb :: Pressure{PU}
+  p :: Vector{Pressure}
+  M :: Vector{MachNumber}
+  p0 :: StagnationPressure
+  T0 :: StagnationTemperature
+  pb_subcrit :: Pressure
+  pb_supcrit_exitshock :: Pressure
+  pb_supcrit :: Pressure
+  pb :: Pressure
   As :: T
   gas :: G
   #NozzleProcess{process_type}(noz,p,M,p0,T0,pb,As,gas) = new{process_type,}
@@ -86,20 +86,20 @@ function NozzleProcess(noz::Nozzle{T,S},pb::Pressure{PU},p0::StagnationPressure{
   p = pressure_nozzle(noz,pb,p0,As,process_type,gas)
   M = machnumber_nozzle(noz,pb,p0,As,process_type,gas)
 
-  NozzleProcess{process_type,T,S,PU,PSU,PTU,typeof(gas)}(noz,p,M,p0,T0,
+  NozzleProcess{process_type,T,S,typeof(gas)}(noz,p,M,p0,T0,
                   pb_subcrit,pb_supcrit_exitshock,pb_supcrit, pb,As,gas)
 end
 
 function Base.show(io::IO, nozproc::NozzleProcess)
   println(io, "Flow in a converging-diverging nozzle")
-  println(io, "   Inlet area (sq cm)= "*string(value(inlet(nozproc.noz),SqCM)))
-  println(io, "   Throat area (sq cm)= "*string(value(throat(nozproc.noz),SqCM)))
-  println(io, "   Exit area (sq cm)= "*string(value(nozzleexit(nozproc.noz),SqCM)))
-  println(io, "   Stagnation pressure (KPa) = "*string(value(nozproc.p0,KPa)))
-  println(io, "   Stagnation temperature (K) = "*string(value(nozproc.T0,K)))
-  println(io, "   Subsonic choked isentropic (KPa) = "*string(value(nozproc.pb_subcrit,KPa)))
-  println(io, "   Supersonic choked isentropic (KPa) = "*string(value(nozproc.pb_supcrit,KPa)))
-  println(io, "   Back pressure (KPa) = "*string(value(nozproc.pb,KPa)))
+  println(io, "   Inlet area (sq cm)= "*string(value(inlet(nozproc.noz),u"cm^2")))
+  println(io, "   Throat area (sq cm)= "*string(value(throat(nozproc.noz),u"cm^2")))
+  println(io, "   Exit area (sq cm)= "*string(value(nozzleexit(nozproc.noz),u"cm^2")))
+  println(io, "   Stagnation pressure (KPa) = "*string(value(nozproc.p0,u"kPa")))
+  println(io, "   Stagnation temperature (K) = "*string(value(nozproc.T0,u"K")))
+  println(io, "   Subsonic choked isentropic (KPa) = "*string(value(nozproc.pb_subcrit,u"kPa")))
+  println(io, "   Supersonic choked isentropic (KPa) = "*string(value(nozproc.pb_supcrit,u"kPa")))
+  println(io, "   Back pressure (KPa) = "*string(value(nozproc.pb,u"kPa")))
   println(io, "   Behavior --> "*flow_quality(nozproc))
 end
 
@@ -107,8 +107,8 @@ machnumber(np::NozzleProcess) = np.M
 pressure(np::NozzleProcess) = np.p
 
 
-function temperature(np::NozzleProcess{PT,T,S,PU,PSU,PTU}) where {PT,T,S,PU,PSU,PTU}
-    Temp = Temperature{PTU}[]
+function temperature(np::NozzleProcess)
+    Temp = Temperature[]
     for Mi in machnumber(np)
       T0_over_T = T0OverT(Mi,Isentropic,gas=np.gas)
       push!(Temp,Temperature(np.T0/T0_over_T))
@@ -116,16 +116,16 @@ function temperature(np::NozzleProcess{PT,T,S,PU,PSU,PTU}) where {PT,T,S,PU,PSU,
     Temp
 end
 
-function density(np::NozzleProcess{PT,T,S,PU,PSU,PTU}) where {PT,T,S,PU,PSU,PTU}
+function density(np::NozzleProcess)
     ρ0 = StagnationDensity(np.p0,np.T0,gas=np.gas)
-    ρ = Density{units(ρ0)}[]
+    ρ = Density[]
     for (pi,Ti) in zip(pressure(np),temperature(np))
         push!(ρ,Density(pi,Ti,gas=np.gas))
     end
     ρ
 end
 
-function massflowrate(np::NozzleProcess{PT,T,S,PU,PSU,PTU}) where {PT,T,S,PU,PSU,PTU}
+function massflowrate(np::NozzleProcess)
     idx = np.noz.throat_index
     Mt = machnumber(np)[idx]
     pt = pressure(np)[idx]
@@ -186,18 +186,18 @@ function _pressure_subsonic(A::AbstractVector{T},pb::Pressure,p0::StagnationPres
   _pressure_subsonic(A,Astar,p0,gas)
 end
 
-function _pressure_subsonic(A::AbstractVector{T},Astar::Area,p0::StagnationPressure{U},gas::PerfectGas) where {T <: Area, U}
+function _pressure_subsonic(A::AbstractVector{T},Astar::Area,p0::StagnationPressure,gas::PerfectGas) where {T <: Area}
   p_over_p0 = SubsonicPOverP0(A,Astar,Isentropic,gas=gas)
-  p = Pressure{U}[]
+  p = Pressure[]
   for pr in p_over_p0
       push!(p,Pressure(pr*p0))
   end
   return p
 end
 
-function _pressure_subsonic_2(A::AbstractVector{T},Astar::Area,p0::StagnationPressure{U},gas::PerfectGas) where {T <: Area, U}
+function _pressure_subsonic_2(A::AbstractVector{T},Astar::Area,p0::StagnationPressure,gas::PerfectGas) where {T <: Area}
   p_over_p0 = SubsonicPOverP0(A,Astar,Isentropic,gas=gas)
-  p = Pressure{U}[]
+  p = Pressure[]
   for pr in p_over_p0
       push!(p,Pressure(pr*p0))
   end
@@ -206,8 +206,8 @@ end
 
 # Diverging nozzle processes
 
-function _pressure_diverging_nozzle(A::AbstractVector{T},Astar::Area,p0::StagnationPressure{U},gas::PerfectGas) where {T <: Area,U}
-    p = Pressure{U}[]
+function _pressure_diverging_nozzle(A::AbstractVector{T},Astar::Area,p0::StagnationPressure,gas::PerfectGas) where {T <: Area}
+    p = Pressure[]
     p_over_p0 = SupersonicPOverP0(A,Astar,Isentropic,gas=gas)
     for pr in p_over_p0
         push!(p,Pressure(pr*p0))
@@ -221,10 +221,10 @@ function _machnumber_diverging_nozzle(A::AbstractVector{T},Astar::Area,gas::Perf
 end
 
 
-function _pressure_diverging_nozzle_with_shock(A::AbstractVector{T},As::Area,Astar1::Area,p01::StagnationPressure{U},gas::PerfectGas) where {T <: Area,U}
+function _pressure_diverging_nozzle_with_shock(A::AbstractVector{T},As::Area,Astar1::Area,p01::StagnationPressure,gas::PerfectGas) where {T <: Area}
     i1 = _index_upstream_of_shock(A,As)
 
-    p = Pressure{U}[]
+    p = Pressure[]
     pup_over_p01 = SupersonicPOverP0(A[1:i1],Astar1,Isentropic,gas=gas)
     for pr in pup_over_p01
         push!(p,Pressure(pr*p01))
@@ -345,7 +345,7 @@ function flow_quality(noz::Nozzle,pb::Pressure,p0::StagnationPressure;gas::Perfe
   pb_subcrit = _pressure_subsonic_critical(noz,p0,gas)
   pb_supcrit_exitshock = _pressure_supersonic_shock_critical(noz,p0,gas)
   pb_supcrit = _pressure_supersonic_critical(noz,p0,gas)
-  if pb > p0 || pb < 0.0
+  if pb > p0 || pb < Pressure(0.0)
     return error("Invalid back pressure")
   elseif pb > pb_subcrit
     return "Unchoked subsonic"
