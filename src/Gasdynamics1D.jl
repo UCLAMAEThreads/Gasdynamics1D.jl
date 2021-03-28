@@ -17,33 +17,14 @@ module Gasdynamics1D
   include("plot_recipes.jl")
 
 
-  #export default_unit,ThermodynamicUnits,SI,SIOtherUnits,Imperial,OtherUnits,Dimensionless
-  #export convert_unit
-  #export Kelvin, K, Celsius, C, F, TemperatureUnits
-  #export Pascals, Pa, KPa, atm, psi, PressureUnits
-  #export KGPerCuM, DensityUnits
-  #export JPerKG, KJPerKG, SpecificEnergyUnits, EnthalpyUnits, InternalEnergyUnits,
-  #        HeatFluxUnits
-  #export MPerSec, VelocityUnits, SoundSpeedUnits
-  #export SqM, SqCM,AreaUnits
-  #export MachNumberUnits
-  #export JPerKGK, KJPerKGK, GasConstantUnits
-  #export EntropyUnits
-  #export KGPerSec, MassFlowRateUnits
-  #export Meters, CM, LengthUnits, DiameterUnits
-  #export FrictionFactorUnits, FLOverDUnits
-
   export default_unit
   export ThermodynamicProcess, Isentropic, NormalShock, FannoFlow, RayleighFlow
   export ThermodynamicQuantity
   export units, value, name
   export DefaultGasConstant, DefaultSpecificHeatRatio
   export Gas, PerfectGas, DefaultPerfectGas
-  export Air, He, O2,CO2,H2,N2
   export SubsonicMachNumber,SupersonicMachNumber
   export SubsonicPOverP0,SupersonicPOverP0
-  export AreaRatio, FrictionFactor, FLOverD, HeatFlux
-  export StagnationPressureRatio, PressureRatio, DensityRatio, TemperatureRatio
   export T0OverT,P0OverP,ρ0Overρ,AOverAStar,AStar
   export FLStarOverD,POverPStar,ρOverρStar,TOverTStar,P0OverP0Star
   export HeatFlux,T0OverT0Star,VOverVStar
@@ -151,10 +132,6 @@ module Gasdynamics1D
       @eval $op(s::ThermodynamicQuantity,C::Real) = $op(s.val,C)
   end
 
-  include("utils.jl")
-  include("quantities.jl")
-  include("gases.jl")
-
 
   ###### THERMODYNAMIC PROCESSES #######
 
@@ -165,8 +142,9 @@ module Gasdynamics1D
   abstract type FannoFlow <: ThermodynamicProcess end
   abstract type RayleighFlow <: ThermodynamicProcess end
 
-
-
+  include("utils.jl")
+  include("quantities.jl")
+  include("gases.jl")
   include("thermodynamics.jl")
   include("isentropic.jl")
   include("normalshocks.jl")
