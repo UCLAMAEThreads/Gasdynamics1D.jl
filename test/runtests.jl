@@ -9,10 +9,14 @@ notebookdir = "../notebook"
 docdir = "../docs/src/manual"
 litdir = "./literate"
 
+if GROUP == "All" || GROUP == "Basics"
+  include("properties.jl")
+end
 
 if GROUP == "All" || GROUP == "Notebooks"
   for (root, dirs, files) in walkdir(litdir)
     for file in files
+      #endswith(file,".jl") && startswith(file,"5") && Literate.notebook(joinpath(root, file),notebookdir)
       endswith(file,".jl") && Literate.notebook(joinpath(root, file),notebookdir)
     end
   end
