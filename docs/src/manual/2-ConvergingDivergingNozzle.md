@@ -23,9 +23,9 @@ nozzle shape: a bell-shaped converging inlet and a slowly increasing diverging
 section. We set the inlet area, the throat area, and the exit area:
 
 ```@example 2-ConvergingDivergingNozzle
-Ai = Area(100,units=SqCM)
-At = Area(30,units=SqCM)
-Ae = Area(60,units=SqCM)
+Ai = Area(100u"cm^2")
+At = Area(30u"cm^2")
+Ae = Area(60u"cm^2")
 noz = Nozzle(Ai,At,Ae)
 ```
 
@@ -41,15 +41,15 @@ to set the stagnation conditions upstream of the nozzle. We will use stagnation
 pressure and temperature.
 
 ```@example 2-ConvergingDivergingNozzle
-p0 = StagnationPressure(700,units=KPa)
-T0 = StagnationTemperature(30,units=C)
+p0 = StagnationPressure(700u"kPa")
+T0 = StagnationTemperature(30u"°C")
 ```
 
 We also need a back pressure, outside of the nozzle exit. Let's try setting it
-to 660 KPa, a little bit below the stagnation pressure
+to 660 kPa, a little bit below the stagnation pressure
 
 ```@example 2-ConvergingDivergingNozzle
-pb = Pressure(660,units=KPa)
+pb = Pressure(660u"kPa")
 ```
 
 Now we have enough information to solve this flow. Let's plot it. We
@@ -73,34 +73,34 @@ As back pressure gets smaller, this shock appears closer to the exit.
 Finally, the shock leaves the nozzle entirely.
 
 ```@example 2-ConvergingDivergingNozzle
-nozzleplot(noz,Pressure(660,units=KPa),p0,T0,fields=("pressure","mach"))
-nozzleplot!(noz,Pressure(600,units=KPa),p0,T0,fields=("pressure","mach"))
-nozzleplot!(noz,Pressure(500,units=KPa),p0,T0,fields=("pressure","mach"))
-nozzleplot!(noz,Pressure(400,units=KPa),p0,T0,fields=("pressure","mach"))
-nozzleplot!(noz,Pressure(360,units=KPa),p0,T0,fields=("pressure","mach"))
-nozzleplot!(noz,Pressure(300,units=KPa),p0,T0,fields=("pressure","mach"))
+nozzleplot(noz,Pressure(660u"kPa"),p0,T0,fields=("pressure","mach"))
+nozzleplot!(noz,Pressure(600u"kPa"),p0,T0,fields=("pressure","mach"))
+nozzleplot!(noz,Pressure(500u"kPa"),p0,T0,fields=("pressure","mach"))
+nozzleplot!(noz,Pressure(400u"kPa"),p0,T0,fields=("pressure","mach"))
+nozzleplot!(noz,Pressure(360u"kPa"),p0,T0,fields=("pressure","mach"))
+nozzleplot!(noz,Pressure(300u"kPa"),p0,T0,fields=("pressure","mach"))
 ```
 
 ### Mass flow rate
 What is the mass flow rate through the nozzle? Let's inspect this value
-for a few back pressures. First, the case with 660 KPa:
+for a few back pressures. First, the case with 660 kPa:
 
 ```@example 2-ConvergingDivergingNozzle
-nozproc = NozzleProcess(noz,Pressure(660,units=KPa),p0,T0)
+nozproc = NozzleProcess(noz,Pressure(660u"kPa"),p0,T0)
 massflowrate(nozproc)
 ```
 
-Now with 600 KPa
+Now with 600 kPa
 
 ```@example 2-ConvergingDivergingNozzle
-nozproc = NozzleProcess(noz,Pressure(600,units=KPa),p0,T0)
+nozproc = NozzleProcess(noz,Pressure(600u"kPa"),p0,T0)
 massflowrate(nozproc)
 ```
 
-And now with 500 KPa
+And now with 500 kPa
 
 ```@example 2-ConvergingDivergingNozzle
-nozproc = NozzleProcess(noz,Pressure(500,units=KPa),p0,T0)
+nozproc = NozzleProcess(noz,Pressure(500u"kPa"),p0,T0)
 massflowrate(nozproc)
 ```
 
@@ -111,14 +111,14 @@ The flow is *choked*.
 We can classify the type of flow with the `flow_quality` function:
 
 ```@example 2-ConvergingDivergingNozzle
-nozproc = NozzleProcess(noz,Pressure(600,units=KPa),p0,T0)
+nozproc = NozzleProcess(noz,Pressure(600u"kPa"),p0,T0)
 flow_quality(nozproc)
 ```
 
 There is a normal shock in the diverging section
 
 ```@example 2-ConvergingDivergingNozzle
-nozproc = NozzleProcess(noz,Pressure(100,units=KPa),p0,T0)
+nozproc = NozzleProcess(noz,Pressure(100u"kPa"),p0,T0)
 flow_quality(nozproc)
 ```
 
@@ -126,7 +126,7 @@ This is over-expanded: the exit pressure is too small and the flow needs to pass
 through shocks outside the nozzle to get up to the back pressure.
 
 ```@example 2-ConvergingDivergingNozzle
-nozproc = NozzleProcess(noz,Pressure(60,units=KPa),p0,T0)
+nozproc = NozzleProcess(noz,Pressure(60u"kPa"),p0,T0)
 flow_quality(nozproc)
 ```
 
@@ -141,7 +141,7 @@ We can find the required back pressure easily, using isentropic relations:
 ```@example 2-ConvergingDivergingNozzle
 Ae = nozzleexit(noz)
 Astar = throat(noz)
-pb = Pressure(SupersonicPOverP0(Ae,Astar,Isentropic)*p0,units=KPa)
+pb = Pressure(SupersonicPOverP0(Ae,Astar,Isentropic)*p0)
 ```
 
 ---

@@ -3,7 +3,6 @@ using ColorTypes
 import PlotUtils: cgrad, palette, color_list
 using LaTeXStrings
 
-
 @userplot NozzlePlot
 
 @recipe function f(h::NozzlePlot;fields=(),gas=DefaultPerfectGas)
@@ -37,7 +36,7 @@ using LaTeXStrings
   if in("pressure",fields_lower)
     subnum += 1
 
-    p = value.(pressure(nozproc),KPa)
+    p = ustrip.(pressure(nozproc),u"kPa")
     pmax = maximum(p)+50
     @series begin
       subplot := subnum
@@ -60,7 +59,7 @@ using LaTeXStrings
   if in("temperature",fields_lower)
     subnum += 1
 
-    T = value.(temperature(nozproc),K)
+    T = ustrip.(temperature(nozproc),u"K")
     Tmax = maximum(T)+100.0
     @series begin
       subplot := subnum
@@ -81,7 +80,7 @@ using LaTeXStrings
   if in("density",fields_lower)
     subnum += 1
 
-    ρ = value.(density(nozproc))
+    ρ = ustrip.(density(nozproc))
     ρmax = maximum(ρ)+1.0
     @series begin
       subplot := subnum
@@ -102,7 +101,7 @@ using LaTeXStrings
   if in("machnumber",fields_lower) || in("mach",fields_lower)
     subnum += 1
 
-    M = value.(machnumber(nozproc))
+    M = ustrip.(machnumber(nozproc))
     Mmax = maximum(M)+1.0
     @series begin
       subplot := subnum
@@ -127,7 +126,7 @@ using LaTeXStrings
   end
 
   subnum += 1
-  A = value.(areas(noz),SqCM)
+  A = ustrip.(areas(noz),u"cm^2")
   Amax = maximum(A)+10
   @series begin
     subplot := subnum

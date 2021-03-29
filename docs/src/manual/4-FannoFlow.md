@@ -23,7 +23,7 @@ number and the reference length $L^*$, representing the length required from tha
 point to bring the flow to Mach number equal to 1. The relationship is based on
 the dimensionless parameter
 
-$$ \dfrac{f L^*}{D}$$
+$$\dfrac{f L^*}{D}$$
 
 where $f$ is the Darcy friction factor and $D$ is the duct diameter. Let's plot
  this relationship for air:
@@ -57,7 +57,7 @@ First, we use $M_1 = 0.1$ to calculate $f L_1^*/D$. We will do the same with $M_
 
 ```@example 4-FannoFlow
 f = FrictionFactor(0.024)
-D = Diameter(2,units=CM)
+D = Diameter(2u"cm")
 ```
 
 ```@example 4-FannoFlow
@@ -100,8 +100,8 @@ The friction factor in the pipe can be assumed to be 0.02 throughout.
 For (a), we are seeking $L_1^*$. First set the known conditions:
 
 ```@example 4-FannoFlow
-D = Diameter(3,units=CM)
-p01 = StagnationPressure(200,units=KPa)
+D = Diameter(3u"cm")
+p01 = StagnationPressure(200u"kPa")
 T01 = StagnationTemperature(500)
 u1 = Velocity(100)
 f = FrictionFactor(0.02)
@@ -151,7 +151,7 @@ ṁ = MassFlowRate(ρ1*u1*A)
 the conditions at the entrance must adjust accordingly. First find the Mach number
 
 ```@example 4-FannoFlow
-Lstar = L = Length(30)
+Lstar = L = Length(30u"m")
 fLstar_over_D = FLOverD(f*Lstar/D)
 M1 = SubsonicMachNumber(fLstar_over_D,FannoFlow)
 ```

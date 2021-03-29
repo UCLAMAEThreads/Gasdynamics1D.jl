@@ -27,12 +27,12 @@ T1 is 20 degrees C, and the pressure p2 is 80 kPa. What is temperature T2?
 
 To answer this, we will use the relationship
 
-$$ \dfrac{T_2}{T_1} = \left( \dfrac{p_2}{p_1}\right)^{(\gamma-1)/\gamma} $$
+$$\dfrac{T_2}{T_1} = \left( \dfrac{p_2}{p_1}\right)^{(\gamma-1)/\gamma} $$
 
 ```@example 1-IsentropicGasDynamics
-p1 = Pressure(101,units=KPa)
-T1 = Temperature(20,units=C)
-p2 = Pressure(80,units=KPa)
+p1 = Pressure(101u"kPa")
+T1 = Temperature(20u"°C")
+p2 = Pressure(80u"kPa")
 ```
 
 First, let's set the pressure ratio:
@@ -62,7 +62,7 @@ T2 = Temperature(T1*T2_over_T1)
 or, in Celsius, if desired
 
 ```@example 1-IsentropicGasDynamics
-value(T2,Celsius)
+value(T2,u"°C")
 ```
 
 We could also do all of this in one line, though it is a bit harder to debug
@@ -80,10 +80,10 @@ MachNumber(TemperatureRatio(0.2381),Isentropic)
 ```
 
 #### Example 3
-If the Mach number is 4.4 and stagnation pressure is 800 KPa, what is the pressure?
+If the Mach number is 4.4 and stagnation pressure is 800 kPa, what is the pressure?
 
 ```@example 1-IsentropicGasDynamics
-Pressure(StagnationPressure(800,units=KPa),MachNumber(4.4),Isentropic)
+Pressure(StagnationPressure(800u"kPa"),MachNumber(4.4),Isentropic)
 ```
 
 ### Mach - area relations
@@ -130,18 +130,18 @@ number is 7.1 and the local area is 50 sq cm?
 We first compute $A/A_*$ from $M = 7.1$, then compute $A_* = A/(A/A_*)$:
 
 ```@example 1-IsentropicGasDynamics
-A = Area(50,units=SqCM)
+A = Area(50u"cm^2")
 M = MachNumber(7.1)
 A_over_Astar = AOverAStar(M,Isentropic)
 Astar = Area(A/A_over_Astar)
-value(Astar,SqCM)
+value(Astar,u"cm^2")
 ```
 
 So the throat would have to be 0.45 sq cm, much smaller than 50 sq cm!
 Note that there is a convenience function to do those steps all in one:
 
 ```@example 1-IsentropicGasDynamics
-value(AStar(A,M),SqCM)
+value(AStar(A,M),u"cm^2")
 ```
 
 #### Example 5
@@ -158,10 +158,10 @@ What are the exit (i.e., "back") pressures $p_2$ associated with these two Mach 
 First, we set the known values
 
 ```@example 1-IsentropicGasDynamics
-p0 = StagnationPressure(700,units=KPa)
-T0 = StagnationTemperature(30,units=C)
-A1 = Area(50,units=SqCM)
-A2 = Area(60,units=SqCM)
+p0 = StagnationPressure(700u"kPa")
+T0 = StagnationTemperature(30u"°C")
+A1 = Area(50u"cm^2")
+A2 = Area(60u"cm^2")
 M1 = MachNumber(0.4)
 ```
 
@@ -177,16 +177,13 @@ A2_over_Astar = AreaRatio(A2/Astar)
 Now calculate the Mach numbers at location 2 (the nozzle exit):
 
 ```@example 1-IsentropicGasDynamics
-M2sub, M2sup = MachNumber(A2_over_Astar,Isentropic,gas=Air);
+M2sub = SubsonicMachNumber(A2_over_Astar,Isentropic,gas=Air);
 nothing #hide
 ```
 
 ```@example 1-IsentropicGasDynamics
-M2sub
-```
-
-```@example 1-IsentropicGasDynamics
-M2sup
+M2sup = SupersonicMachNumber(A2_over_Astar,Isentropic,gas=Air);
+nothing #hide
 ```
 
 Actually, all of the last few steps can be done in *one step* with a different
@@ -197,26 +194,18 @@ M2sub, M2sup = MachNumber(M1,A1,A2,Isentropic,gas=Air);
 nothing #hide
 ```
 
-```@example 1-IsentropicGasDynamics
-M2sub
-```
-
-```@example 1-IsentropicGasDynamics
-M2sup
-```
-
 Now let's determine the exit pressures (location 2) corresponding to these two Mach numbers:
 
 ```@example 1-IsentropicGasDynamics
 p0_over_p2sub = P0OverP(M2sub,Isentropic,gas=Air)
 p2sub = Pressure(p0/p0_over_p2sub)
-value(p2sub,KPa)
+value(p2sub,u"kPa")
 ```
 
 ```@example 1-IsentropicGasDynamics
 p0_over_p2sup = P0OverP(M2sup,Isentropic,gas=Air)
 p2sup = Pressure(p0/p0_over_p2sup)
-value(p2sup,KPa)
+value(p2sup,u"kPa")
 ```
 
 So if the exit pressure is 651 kPa, then the flow will remain choked and **subsonic**
