@@ -50,9 +50,9 @@ module Gasdynamics1D
   abstract type ThermodynamicQuantity{U} end
 
   """
-      units(a::ThermodynamicQuantity)
+      unit(a::ThermodynamicQuantity)
 
-  Return the units of quantity `a`. Extends `units` operation
+  Return the units of quantity `a`. Extends `unit` operation
   in `Unitful`.
   """
   unit(::ThermodynamicQuantity{U}) where U = unit(U)
