@@ -17,7 +17,7 @@ ThermofluidQuantities = "8e558ecf-e13e-4796-9812-ac12e4724222"
 
 [compat]
 ColorTypes = "0.10.9"
-DocumenterTools = "0.1.9"
+DocumenterTools = "0.1"
 LaTeXStrings = "1.2.0"
 Literate = "2.7"
 PlotUtils = "1.0.9"
