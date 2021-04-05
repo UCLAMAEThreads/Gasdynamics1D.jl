@@ -23,7 +23,7 @@ T1 is 20 degrees C, and the pressure p2 is 80 kPa. What is temperature T2?
 
 To answer this, we will use the relationship
 
-$$\dfrac{T_2}{T_1} = \left( \dfrac{p_2}{p_1}\right)^{(\gamma-1)/\gamma} $$
+$$\dfrac{T_2}{T_1} = \left( \dfrac{p_2}{p_1}\right)^{(\gamma-1)/\gamma}$$
 =#
 p1 = Pressure(101u"kPa")
 T1 = Temperature(20u"°C")
