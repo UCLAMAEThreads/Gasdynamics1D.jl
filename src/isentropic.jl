@@ -76,10 +76,10 @@ end
 function MachNumber(p_over_p0::PressureRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
     value(p_over_p0) <= 1.0 || error("p/p0 must be 1 or smaller")
     γ = SpecificHeatRatio(gas)
-    MachNumber(TemperatureRatio(p_over_p0,Isentropic,gas=gas))
+    MachNumber(TemperatureRatio(p_over_p0,Isentropic,gas=gas),gas=gas)
 end
 
-MachNumber(p::Pressure,p0::StagnationPressure,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas) = MachNumber(PressureRatio(p/p0),gas=gas)
+MachNumber(p::Pressure,p0::StagnationPressure,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas) = MachNumber(PressureRatio(p/p0),Isentropic,gas=gas)
 
 # Density relations
 function StagnationDensity(ρ::Density,M::MachNumber,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
