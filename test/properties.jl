@@ -41,3 +41,11 @@ end
   @test T == Temperature(p,ρ)
 
 end
+
+@testset "Isentropic relations" begin
+
+  p = Pressure(10u"psi")
+  p0 = StagnationPressure(14.7u"psi")
+  M = MachNumber(PressureRatio(p/p0),Isentropic,gas=He)
+  @test M ≈ 0.7069936247021056 atol=1e-10
+end

@@ -53,7 +53,7 @@ Temperature(T0::StagnationTemperature,M::MachNumber,::Type{Isentropic};gas::Perf
 Temperature(T0::StagnationTemperature,M::MachNumber;gas::PerfectGas=DefaultPerfectGas) = Temperature(T0,M,Isentropic,gas=gas)
 
 function MachNumber(T_over_T0::TemperatureRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
-    value(T_over_T0) <= 1.0 || error("T/T0 must be 1 or smaller")
+    value(T_over_T0) <= 1.0 || error("T/T0 must be 1 or smaller. Maybe you need to supply the inverse?")
     γ = SpecificHeatRatio(gas)
     M2 = ((1.0/T_over_T0)-1)*2/(γ-1)
     MachNumber(sqrt(M2))
@@ -74,7 +74,7 @@ function Pressure(p0::StagnationPressure,M::MachNumber,::Type{Isentropic};gas::P
 end
 
 function MachNumber(p_over_p0::PressureRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
-    value(p_over_p0) <= 1.0 || error("p/p0 must be 1 or smaller")
+    value(p_over_p0) <= 1.0 || error("p/p0 must be 1 or smaller. Maybe you need to supply the inverse?")
     γ = SpecificHeatRatio(gas)
     MachNumber(TemperatureRatio(p_over_p0,Isentropic,gas=gas),gas=gas)
 end
@@ -90,7 +90,7 @@ function Density(ρ0::StagnationDensity,M::MachNumber,::Type{Isentropic};gas::Pe
 end
 
 function MachNumber(ρ_over_ρ0::DensityRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
-    value(ρ_over_ρ0) <= 1.0 || error("ρ/ρ0 must be 1 or smaller")
+    value(ρ_over_ρ0) <= 1.0 || error("ρ/ρ0 must be 1 or smaller. Maybe you need to supply the inverse?")
     γ = SpecificHeatRatio(gas)
     MachNumber(TemperatureRatio(ρ_over_ρ0,Isentropic,gas=gas))
 end
@@ -111,12 +111,12 @@ end
 AStar(A::Area,M::MachNumber;gas::PerfectGas=DefaultPerfectGas) = AStar(A,M,Isentropic,gas=gas)
 
 function SubsonicMachNumber(A_over_Astar::AreaRatio,::Type{Isentropic}; gas::PerfectGas=DefaultPerfectGas)
-    value(A_over_Astar) >= 1.0 || error("A/A* must be 1 or larger")
+    value(A_over_Astar) >= 1.0 || error("A/A* must be 1 or larger. Maybe you need to supply the inverse?")
     Msub = find_zero(x -> AOverAStar(MachNumber(x))-A_over_Astar,(0,1),order=16)
     return MachNumber(Msub)
 end
 function SupersonicMachNumber(A_over_Astar::AreaRatio,::Type{Isentropic}; gas::PerfectGas=DefaultPerfectGas)
-  value(A_over_Astar) >= 1.0 || error("A/A* must be 1 or larger")
+  value(A_over_Astar) >= 1.0 || error("A/A* must be 1 or larger. Maybe you need to supply the inverse?")
   Msup = find_zero(x -> AOverAStar(MachNumber(x))-A_over_Astar,(1,Inf),order=16)
   return MachNumber(Msup)
 end
