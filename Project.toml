@@ -1,7 +1,7 @@
 name = "Gasdynamics1D"
 uuid = "147bd2d4-5614-4af7-9716-06bc640f25f6"
 authors = ["Jeff Eldredge <jdeldre@g.ucla.edu>"]
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 ColorTypes = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
@@ -25,7 +25,7 @@ RecipesBase = "1.1.1"
 Reexport = "0.2.0, 1.0"
 Requires = "1.1.3"
 Roots = "1.0.7"
-ThermofluidQuantities = "0.1.3"
+ThermofluidQuantities = "0.1.7"
 julia = "1.4"
 
 [extras]
