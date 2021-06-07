@@ -112,12 +112,12 @@ AStar(A::Area,M::MachNumber;gas::PerfectGas=DefaultPerfectGas) = AStar(A,M,Isent
 
 function SubsonicMachNumber(A_over_Astar::AreaRatio,::Type{Isentropic}; gas::PerfectGas=DefaultPerfectGas)
     value(A_over_Astar) >= 1.0 || error("A/A* must be 1 or larger. Maybe you need to supply the inverse?")
-    Msub = find_zero(x -> AOverAStar(MachNumber(x))-A_over_Astar,(0,1),order=16)
+    Msub = find_zero(x -> AOverAStar(MachNumber(x),gas=gas)-A_over_Astar,(0,1),order=16)
     return MachNumber(Msub)
 end
 function SupersonicMachNumber(A_over_Astar::AreaRatio,::Type{Isentropic}; gas::PerfectGas=DefaultPerfectGas)
   value(A_over_Astar) >= 1.0 || error("A/A* must be 1 or larger. Maybe you need to supply the inverse?")
-  Msup = find_zero(x -> AOverAStar(MachNumber(x))-A_over_Astar,(1,Inf),order=16)
+  Msup = find_zero(x -> AOverAStar(MachNumber(x),gas=gas)-A_over_Astar,(1,Inf),order=16)
   return MachNumber(Msup)
 end
 
