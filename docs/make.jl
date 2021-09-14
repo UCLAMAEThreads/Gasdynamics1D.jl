@@ -1,5 +1,9 @@
 using Documenter, Gasdynamics1D
 
+#ENV["GKSwstype"] = "nul" # removes GKS warnings during plotting
+ENV["GKSwstype"] = "100" # removes GKS warnings during plotting
+
+
 makedocs(
     sitename = "Gasdynamics1D.jl",
     doctest = true,
