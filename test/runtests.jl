@@ -4,6 +4,9 @@ using Literate
 
 const GROUP = get(ENV, "GROUP", "All")
 
+#ENV["GKSwstype"] = "nul" # removes GKS warnings during plotting
+ENV["GKSwstype"] = "100"
+
 
 notebookdir = "../notebook"
 docdir = "../docs/src/manual"
