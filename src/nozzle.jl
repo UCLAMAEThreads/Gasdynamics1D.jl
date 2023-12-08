@@ -256,7 +256,7 @@ end
 
 # Given an exit area Ae, shock area As, and Astar1, p01 in upstream nozzle
 # return the pressure pe at exit
-function _pressure_diverging_nozzle_with_shock(Ae::Area,As::Area,Astar1::Area,p01::StagnationPressure,gas::PerfectGas) where T <: Area
+function _pressure_diverging_nozzle_with_shock(Ae::Area,As::Area,Astar1::Area,p01::StagnationPressure,gas::PerfectGas)
     value(Astar1) <= value(As) <= value(Ae) || error("Shock area outside of bounds")
 
     M1, M2, Astar2, p02_over_p01, _ = _shock(As,Astar1,gas)
@@ -270,7 +270,7 @@ end
 
 # Given an exit area Ae, shock area As, and Astar1, p01 in upstream nozzle
 # return the Mach number Me at exit
-function _machnumber_diverging_nozzle_with_shock(Ae::Area,As::Area,Astar1::Area,p01::StagnationPressure,gas::PerfectGas) where T <: Area
+function _machnumber_diverging_nozzle_with_shock(Ae::Area,As::Area,Astar1::Area,p01::StagnationPressure,gas::PerfectGas)
     value(Astar1) <= value(As) <= value(Ae) || error("Shock area outside of bounds")
 
     M1, M2, Astar2, _, _ = _shock(As,Astar1,gas)

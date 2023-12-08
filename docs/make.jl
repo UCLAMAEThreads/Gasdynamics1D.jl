@@ -15,7 +15,8 @@ makedocs(
                      "manual/2-ConvergingDivergingNozzle.md",
                      "manual/3-NormalShocks.md",
                      "manual/4-FannoFlow.md",
-                     "manual/5-RayleighFlow.md"
+                     "manual/5-RayleighFlow.md",
+                     "manual/functions.md"
                      ]
         #"Internals" => [ "internals/properties.md"]
     ],
