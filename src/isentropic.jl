@@ -1,18 +1,55 @@
 ######## ISENTROPIC RELATIONS #########
 
+"""
+    TemperatureRatio(pr::PressureRatio,Isentropic[;gas=Air])
+
+Compute the ratio of temperatures between two points connected isentropically, given the ratio of pressures `pr` between those
+two points, using the isentropic relation
+
+``\\dfrac{T_2}{T_1} = \\left(\\dfrac{p_2}{p_1}\\right)^{(\\gamma-1)/\\gamma}``
+"""
 function TemperatureRatio(pratio::PressureRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
     γ = SpecificHeatRatio(gas)
     TemperatureRatio(pratio^((γ-1)/γ))
 end
 
+"""
+    TemperatureRatio(dr::DensityRatio,Isentropic[;gas=Air])
+
+Compute the ratio of temperatures between two points connected isentropically, given the ratio of densities `dr` between those
+two points, using the isentropic relation
+
+``\\dfrac{T_2}{T_1} = \\left(\\dfrac{\\rho_2}{\\rho_1}\\right)^{\\gamma-1}``
+"""
 function TemperatureRatio(ρratio::DensityRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
     γ = SpecificHeatRatio(gas)
     TemperatureRatio(ρratio^(γ-1))
 end
 
+"""
+    PressureRatio(Tr::TemperatureRatio,Isentropic[;gas=Air])
+
+Compute the ratio of temperatures between two points connected isentropically, given the ratio of densities `dr` between those
+two points, using the isentropic relation
+
+``\\dfrac{p_2}{p_1} = \\left(\\dfrac{T_2}{T_1}\\right)^{\\gamma/(\\gamma-1)}``
+"""
 function PressureRatio(Tratio::TemperatureRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
     γ = SpecificHeatRatio(gas)
     PressureRatio(Tratio^(γ/(γ-1)))
+end
+
+"""
+    PressureRatio(dr::DensityRatio,Isentropic[;gas=Air])
+
+Compute the ratio of pressures between two points connected isentropically, given the ratio of densities `dr` between those
+two points, using the isentropic relation
+
+``\\dfrac{p_2}{p_1} = \\left(\\dfrac{\\rho_2}{\\rho_1}\\right)^{\\gamma}``
+"""
+function PressureRatio(ρratio::DensityRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
+    γ = SpecificHeatRatio(gas).val
+    PressureRatio(ρratio^(γ))
 end
 
 function T0OverT(M::MachNumber,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
@@ -29,11 +66,32 @@ function P0OverP(M::MachNumber,::Type{Isentropic};gas::PerfectGas=DefaultPerfect
     PressureRatio(Tratio,Isentropic,gas=gas)
 end
 
+"""
+    DensityRatio(Tr::TemperatureRatio,Isentropic[;gas=Air])
 
+Compute the ratio of densities between two points connected isentropically, given the ratio of temperatures `Tr` between those
+two points, using the isentropic relation
+
+``\\dfrac{\\rho_2}{\\rho_1} = \\left(\\dfrac{T_2}{T_1}\\right)^{1/(\\gamma-1)}``
+"""
 function DensityRatio(Tratio::TemperatureRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
     γ = SpecificHeatRatio(gas)
     DensityRatio(Tratio^(1/(γ-1)))
 end
+
+"""
+    DensityRatio(pr::PressureRatio,Isentropic[;gas=Air])
+
+Compute the ratio of densities between two points connected isentropically, given the ratio of pressures `pr` between those
+two points, using the isentropic relation
+
+``\\dfrac{\\rho_2}{\\rho_1} = \\left(\\dfrac{p_2}{p_1}\\right)^{1/\\gamma}``
+"""
+function DensityRatio(pratio::PressureRatio,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
+    γ = SpecificHeatRatio(gas)
+    DensityRatio(pratio^(1/γ))
+end
+
 
 function ρ0Overρ(M::MachNumber,::Type{Isentropic};gas::PerfectGas=DefaultPerfectGas)
     γ = SpecificHeatRatio(gas)
