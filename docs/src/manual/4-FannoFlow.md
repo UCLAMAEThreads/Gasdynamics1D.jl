@@ -1,5 +1,5 @@
 ```@meta
-EditURL = "<unknown>/literate/4-FannoFlow.jl"
+EditURL = "../../../test/literate/4-FannoFlow.jl"
 ```
 
 # Steady frictional flow through a constant-area duct
@@ -8,14 +8,14 @@ This notebook demonstrates the use of tools for computing flow through a constan
 
 ### Set up the module
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 using Gasdynamics1D
-```
+````
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 using Plots
 using LaTeXStrings
-```
+````
 
 ### Some general aspects of Fanno flow
 Most calculations with frictional flow involve the relationship between Mach
@@ -28,17 +28,17 @@ $$\dfrac{f L^*}{D}$$
 where $f$ is the Darcy friction factor and $D$ is the duct diameter. Let's plot
  this relationship for air:
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 Mrange = range(0.1,8,length=801)
 fLDarray = []
 for M in Mrange
     push!(fLDarray,value(FLStarOverD(MachNumber(M),FannoFlow,gas=Air)))
 end
-```
+````
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 plot(Mrange,fLDarray,xlim=(0,8),ylim=(0,10),xticks=0:1:8,xlabel="Mach number",ylabel=L"fL^*/D",legend=false)
-```
+````
 
 Notice that the reference length goes to zero at Mach number 1, as it should, by
 its definition. It should also be noted that there are a few values of $fL^*/D$ for
@@ -55,34 +55,34 @@ First, we use $M_1 = 0.1$ to calculate $f L_1^*/D$. We will do the same with $M_
  to calculate $f L_2^*/D$. The actual length $L$ is given by the difference between
  $L_1^*$ and $L_2^*$.
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 f = FrictionFactor(0.024)
 D = Diameter(2u"cm")
-```
+````
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 M1 = MachNumber(0.1)
 fL1star_over_D = FLStarOverD(M1,FannoFlow)
-```
+````
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 M2 = MachNumber(0.5)
 fL2star_over_D = FLStarOverD(M2,FannoFlow)
-```
+````
 
 Now calculate $L_1^*$ and $L_2^*$, and $L$ from their difference:
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 L1star = Length(fL1star_over_D*D/f)
 L2star = Length(fL2star_over_D*D/f)
 L = Length(L1star-L2star)
-```
+````
 
 The additional length needed to bring the flow to Mach number 1 is, by definition, $L_2^*$:
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 L2star
-```
+````
 
 So we only need 0.89 m more to bring the flow to sonic (choked) conditions.
 
@@ -99,33 +99,33 @@ The friction factor in the pipe can be assumed to be 0.02 throughout.
 
 For (a), we are seeking $L_1^*$. First set the known conditions:
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 D = Diameter(3u"cm")
 p01 = StagnationPressure(200u"kPa")
 T01 = StagnationTemperature(500)
 u1 = Velocity(100)
 f = FrictionFactor(0.02)
-```
+````
 
 Now calculate the Mach number at the entrance. For this, we need $c_1$, the speed
 of sound. We get this by using the known stagnation temperature $T_{01} = 500$ K
 and velocity $u_1 = 100$ m/s. We will calculate the temperature $T_1$ from these
 (using $h_1 = h_{01} - u_1^2/2$), and $c_1$ from that:
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 h01 = StagnationEnthalpy(T01)
 h1 = Enthalpy(h01,u1) # this computes h1 = h01 - u1^2/2
 T1 = Temperature(h1)
 c1 = SoundSpeed(T1)
 M1 = MachNumber(u1/c1)
-```
+````
 
 Now we can compute $fL_1^*/D$ and then $L_1^*$. This is what we seek.
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 fL1starD = FLStarOverD(M1,FannoFlow)
 L1star = Length(fL1starD*D/f)
-```
+````
 
 so we need a pipe of 16.6 m to reach Mach number 1.
 
@@ -135,37 +135,37 @@ we will first get the stagnation density (from $p_{01}$ and $T_{01}$) and then g
  between two different points in the duct; we are using it to relate *local*
  stagnation conditions to *local* conditions.)
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 A = Area(D)
 ρ01 = StagnationDensity(p01,T01)
 ρ1 = Density(ρ01,M1,Isentropic)
-```
+````
 
 and the mass flow rate is:
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 ṁ = MassFlowRate(ρ1*u1*A)
-```
+````
 
 (c) Now suppose the pipe is 30 m long. This becomes our new $L_1^*$, and all of
 the conditions at the entrance must adjust accordingly. First find the Mach number
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 Lstar = L = Length(30u"m")
 fLstar_over_D = FLOverD(f*Lstar/D)
 M1 = SubsonicMachNumber(fLstar_over_D,FannoFlow)
-```
+````
 
 Note that the entrance Mach number is lower. The flow slows down due to the longer pipe.
 Now find the new values of $\rho_1$ and $u_1$ (by finding $c_1$):
 
-```@example 4-FannoFlow
+````@example 4-FannoFlow
 T1 = Temperature(T01,M1,Isentropic)
 ρ1 = Density(ρ01,M1,Isentropic)
 c1 = SoundSpeed(T1)
 u1 = Velocity(c1,M1)
 ṁ = MassFlowRate(ρ1*u1*A)
-```
+````
 
 So the mass flow rate is smaller than it was with the shorter pipe! For the same
 reservoir conditions, less mass flow rate is delivered to a longer (choked) pipe.
